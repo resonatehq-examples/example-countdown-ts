@@ -1,0 +1,99 @@
+# Resonate Countdown
+
+A *Countdown* powered by the Resonate Typescript SDK. The countdown sends notifications to [ntfy.sh](https://ntfy.sh/), a simple HTTP-based notification service, at configurable intervals.
+
+![Countdown Workflow](doc/countdown.jpg)
+
+The countdown is implemented as a generator function featureing a simple loop that can sleep for hours, days, or weeks powered by Resonate's durability guarantees. At every `yield` point, Resonate automatically checkpoints the execution and resumes the where where it left off in case of crashes or restarts.
+
+```typescript
+function* countdown(ctx: Context, count: number, delay: number, url: string) {
+  for (let i = count; i > 0; i--) {
+    // send notification to ntfy.sh
+    yield* ctx.run(notify, url, `Countdown: ${i}`);
+    // sleep
+    yield* ctx.sleep(delay * 60 * 1000);
+  }
+  // send the last notification to ntfy.sh
+  yield* ctx.run(notify, url, `Done`);
+}
+```
+
+Try it yourself: Between notifications, kill the worker and restart. The countdown won't be affected—it picks up exactly where it left off.
+
+![Countdown Workflow](doc/mechanics.jpg)
+
+## Setup Dependencies:
+
+### 1 Setup the Resonate Server
+
+Install the [Resonate Server](https://github.com/resonatehq/resonate)
+
+```
+brew install resonatehq/tap/resonate
+```
+
+### 2 Setup the countdown
+
+Clone the repository
+
+```bash
+git clone https://github.com/resonatehq-examples/resonate-countdown-ts.git
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+## Running the Project
+
+### 1. Start the Resonate Server
+
+In Termainl #1, start the Resonate server in development mode listening on `http://localhost:8001`.
+
+```bash
+resonate dev
+```
+
+- When you start the server in development mode, the server does not persist data on disk and lose its state when you stop the process
+
+### 2. Start the Worker
+
+In Termainl #2, start the Resonate worker:
+
+```bash
+npm start
+```
+
+### 3. Invoke a Countdown
+
+In Termainl #3, start the countdown, for example, counting down from 5, every minute, and posting notifications to https://ntfy.sh/resonatehq:
+
+```bash
+resonate invoke countdown.1 --func countdown --arg 5 --arg 1 --arg https://ntfy.sh/resonatehq
+```
+
+**Parameters:**
+
+- `countdown.1`: Unique ID for this countdown
+- `--arg 5`: Count down from 5
+- `--arg 1`: Wait 1 minute between counts
+- `--arg https://ntfy.sh/resonatehq`: Where to send notifications
+
+Open `https://ntfy.sh/resonatehq` in your browser to see the notifications in real-time.
+
+## Checking Progress
+
+Get details of a specific countdown:
+
+```bash
+resonate promises get countdown.1
+```
+
+View all promises:
+
+```bash
+resonate promises search "*"
+```
