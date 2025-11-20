@@ -4,22 +4,30 @@ A *Countdown* powered by the Resonate Typescript SDK. The countdown sends notifi
 
 ![Countdown Workflow](doc/countdown.jpg)
 
-The countdown is implemented as a generator function featureing a simple loop that can sleep for hours, days, or weeks powered by Resonate's durability guarantees. At every `yield` point, Resonate automatically checkpoints the execution and resumes the where where it left off in case of crashes or restarts.
+## Behind the Scenes
+
+The Countdown is implemented with Resonate's Durable Execution framework, Distributed Async Await. The Countdown is a simple loop that can sleep for hours, days, or weeks. On `yield ctx.sleep` the countdown function suspends (terminates), immediately completing the Google Cloud Function execution. After the specified delay, Resonate will resume (restart) the countdown function by triggering a new Google Cloud Function execution.
 
 ```typescript
-function* countdown(ctx: Context, count: number, delay: number, url: string) {
-  for (let i = count; i > 0; i--) {
-    // send notification to ntfy.sh
-    yield* ctx.run(notify, url, `Countdown: ${i}`);
-    // sleep
-    yield* ctx.sleep(delay * 60 * 1000);
-  }
-  // send the last notification to ntfy.sh
-  yield* ctx.run(notify, url, `Done`);
+export function* countdown(
+	ctx: Context,
+	count: number,
+	delay: number,
+	url: string,
+) {
+	for (let i = count; i > 0; i--) {
+		// send notification to ntfy.sh
+		yield* ctx.run(notify, url, `Countdown: ${i}`);
+		// sleep creates a suspension point causing
+		// the Google Cloud Function execution to terminate
+		yield* ctx.sleep(delay * 60 * 1000);
+	}
+	// send the last notification to ntfy.sh
+	yield* ctx.run(notify, url, `Done`);
 }
 ```
 
-Try it yourself: Between notifications, kill the worker and restart. The countdown won't be affected—it picks up exactly where it left off.
+Try yourself: Between notifications, kill the worker and restart. The countdown won't be affected and picks up exactly where it left off.
 
 ![Countdown Workflow](doc/mechanics.jpg)
 
