@@ -45,7 +45,7 @@ brew install resonatehq/tap/resonate
 Clone the repository
 
 ```bash
-git clone https://github.com/resonatehq-examples/resonate-countdown-ts.git
+git clone https://github.com/resonatehq-examples/example-countdown-ts.git
 ```
 
 Install dependencies
