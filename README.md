@@ -1,6 +1,6 @@
 # Resonate Countdown
 
-A *Countdown* powered by the Resonate Typescript SDK. The countdown sends notifications to [ntfy.sh](https://ntfy.sh/), a simple HTTP-based notification service, at configurable intervals.
+A *Countdown* powered by the Resonate TypeScript SDK. The countdown sends notifications to [ntfy.sh](https://ntfy.sh/), a simple HTTP-based notification service, at configurable intervals.
 
 ![Countdown Workflow](doc/countdown.jpg)
 
@@ -58,17 +58,17 @@ npm install
 
 ### 1. Start the Resonate Server
 
-In Termainl #1, start the Resonate server in development mode listening on `http://localhost:8001`.
+In Terminal #1, start the Resonate server in development mode listening on `http://localhost:8001`.
 
 ```bash
 resonate dev
 ```
 
-- When you start the server in development mode, the server does not persist data on disk and lose its state when you stop the process
+- When you start the server in development mode, the server does not persist data on disk and will lose its state when you stop the process
 
 ### 2. Start the Worker
 
-In Termainl #2, start the Resonate worker:
+In Terminal #2, start the Resonate worker:
 
 ```bash
 npm start
@@ -76,7 +76,7 @@ npm start
 
 ### 3. Invoke a Countdown
 
-In Termainl #3, start the countdown, for example, counting down from 5, every minute, and posting notifications to https://ntfy.sh/resonatehq:
+In Terminal #3, start the countdown, for example, counting down from 5, every minute, and posting notifications to https://ntfy.sh/resonatehq:
 
 ```bash
 resonate invoke countdown.1 --func countdown --arg 5 --arg 1 --arg https://ntfy.sh/resonatehq
@@ -104,3 +104,9 @@ View all promises:
 ```bash
 resonate promises search "*"
 ```
+
+## Learn More
+
+- [Resonate Documentation](https://docs.resonatehq.io)
+- [Durable Sleep Explained](https://docs.resonatehq.io/concepts/sleep)
+- [TypeScript SDK Guide](https://docs.resonatehq.io/develop/typescript)
