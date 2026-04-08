@@ -102,7 +102,7 @@ resonate promises get countdown.1
 View all promises:
 
 ```bash
-resonate promises search "*"
+resonate promises search --tags '{"resonate:origin":"countdown.1"}'
 ```
 
 ## Learn More
