@@ -13,7 +13,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@resonatehq/sdk": "^0.10",
+    "@resonatehq/sdk": "^0.10.0",
     "@types/node": "^24.6.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
