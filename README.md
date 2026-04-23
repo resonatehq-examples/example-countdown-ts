@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/banner-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/banner-light.png">
+    <img alt="Countdown — Resonate example" src="./assets/banner-dark.png">
+  </picture>
+</p>
+
 # Resonate Countdown
 
 A *Countdown* powered by the Resonate TypeScript SDK. The countdown sends notifications to [ntfy.sh](https://ntfy.sh/), a simple HTTP-based notification service, at configurable intervals.
