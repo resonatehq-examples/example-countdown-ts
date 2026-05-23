@@ -17,6 +17,7 @@ export function* countdown(
 }
 
 async function notify(_ctx: Context, url: string, msg: string) {
+  console.log(`notify: ${msg}`);
   await fetch(url, {
     method: "POST",
     body: msg,

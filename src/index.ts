@@ -7,6 +7,8 @@ const resonate = new Resonate({
 
 resonate.register("countdown", countdown);
 
+console.log("countdown worker running");
+
 // Gracefully stop on shutdown
 process.on("SIGINT", () => {
   resonate.stop();
